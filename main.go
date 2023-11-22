@@ -23,7 +23,7 @@ import (
 )
 
 const (
-	version     = "9.9.0"
+	version     = "9.10.1"
 	usage       = "A tool for updating Atlassian Confluence pages from markdown."
 	description = `Mark is a tool to update Atlassian Confluence pages from markdown. Documentation is available here: https://github.com/kovetskiy/mark`
 )
@@ -172,6 +172,13 @@ var flags = []cli.Flag{
 		Value:   1.0,
 		Usage:   "defines the scaling factor for mermaid renderings.",
 		EnvVars: []string{"MARK_MERMAID_SCALE"},
+	}),
+	altsrc.NewStringFlag(&cli.StringFlag{
+		Name:      "include-path",
+		Value:     "",
+		Usage:     "Path for shared includes, used as a fallback if the include doesn't exist in the current directory.",
+		TakesFile: true,
+		EnvVars:   []string{"MARK_INCLUDE_PATH"},
 	}),
 }
 
@@ -339,6 +346,7 @@ func processFile(
 	for {
 		templates, markdown, recurse, err = includes.ProcessIncludes(
 			filepath.Dir(file),
+			cCtx.String("include-path"),
 			markdown,
 			templates,
 		)
@@ -353,6 +361,7 @@ func processFile(
 
 	macros, markdown, err := macro.ExtractMacros(
 		filepath.Dir(file),
+		cCtx.String("include-path"),
 		markdown,
 		templates,
 	)
