@@ -1,0 +1,68 @@
+<p><code>inline</code></p>
+<ac:structured-macro ac:name="code"><ac:parameter ac:name="language"></ac:parameter><ac:parameter ac:name="collapse">false</ac:parameter><ac:plain-text-body><![CDATA[some code]]></ac:plain-text-body></ac:structured-macro><ac:structured-macro ac:name="code"><ac:parameter ac:name="language">bash</ac:parameter><ac:parameter ac:name="collapse">false</ac:parameter><ac:plain-text-body><![CDATA[code bash]]></ac:plain-text-body></ac:structured-macro><ac:structured-macro ac:name="code"><ac:parameter ac:name="language">bash</ac:parameter><ac:parameter ac:name="collapse">false</ac:parameter><ac:plain-text-body><![CDATA[with a newline
+]]></ac:plain-text-body></ac:structured-macro><ac:structured-macro ac:name="code"><ac:parameter ac:name="language">unknown</ac:parameter><ac:parameter ac:name="collapse">false</ac:parameter><ac:plain-text-body><![CDATA[unknown code]]></ac:plain-text-body></ac:structured-macro><p>text text 2</p>
+<ac:structured-macro ac:name="code"><ac:parameter ac:name="language">unknown</ac:parameter><ac:parameter ac:name="collapse">false</ac:parameter><ac:plain-text-body><![CDATA[unknown code 2]]></ac:plain-text-body></ac:structured-macro><ac:structured-macro ac:name="code"><ac:parameter ac:name="language">sh</ac:parameter><ac:parameter ac:name="collapse">false</ac:parameter><ac:parameter ac:name="title">A b c</ac:parameter><ac:plain-text-body><![CDATA[no-collapse-title]]></ac:plain-text-body></ac:structured-macro><ac:structured-macro ac:name="code"><ac:parameter ac:name="language">bash</ac:parameter><ac:parameter ac:name="collapse">true</ac:parameter><ac:parameter ac:name="title">A b c</ac:parameter><ac:plain-text-body><![CDATA[collapse-and-title]]></ac:plain-text-body></ac:structured-macro><ac:structured-macro ac:name="code"><ac:parameter ac:name="language">c</ac:parameter><ac:parameter ac:name="collapse">true</ac:parameter><ac:plain-text-body><![CDATA[collapse-no-title]]></ac:plain-text-body></ac:structured-macro><ac:structured-macro ac:name="code"><ac:parameter ac:name="language">nested</ac:parameter><ac:parameter ac:name="collapse">false</ac:parameter><ac:plain-text-body><![CDATA[code
+``` more code ```
+even more code]]></ac:plain-text-body></ac:structured-macro><ac:structured-macro ac:name="code"><ac:parameter ac:name="language"></ac:parameter><ac:parameter ac:name="collapse">false</ac:parameter><ac:plain-text-body><![CDATA[indented code block
+with multiple lines]]></ac:plain-text-body></ac:structured-macro><ac:structured-macro ac:name="cloudscript-confluence-mermaid"><ac:parameter ac:name="showSource">true</ac:parameter><ac:parameter ac:name="collapse">false</ac:parameter><ac:plain-text-body><![CDATA[graph TD;
+    A-->B;
+    A-->C;
+    B-->D;
+    C-->D;]]></ac:plain-text-body></ac:structured-macro><ac:structured-macro ac:name="cloudscript-confluence-mermaid"><ac:parameter ac:name="showSource">true</ac:parameter><ac:parameter ac:name="collapse">true</ac:parameter><ac:parameter ac:name="title">my mermaid graph</ac:parameter><ac:plain-text-body><![CDATA[graph TD;
+    A-->B;
+    A-->C;
+    B-->D;
+    C-->D;]]></ac:plain-text-body></ac:structured-macro><ac:structured-macro ac:name="cloudscript-confluence-mermaid"><ac:parameter ac:name="showSource">true</ac:parameter><ac:parameter ac:name="collapse">false</ac:parameter><ac:parameter ac:name="title">my mermaid graph</ac:parameter><ac:plain-text-body><![CDATA[graph TD;
+    A-->B;
+    A-->C;
+    B-->D;
+    C-->D;]]></ac:plain-text-body></ac:structured-macro><ac:structured-macro ac:name="code"><ac:parameter ac:name="language">d2</ac:parameter><ac:parameter ac:name="collapse">false</ac:parameter><ac:plain-text-body><![CDATA[vars: {
+  d2-config: {
+    layout-engine: elk
+    # Terminal theme code
+    theme-id: 300
+  }
+}
+network: {
+  cell tower: {
+    satellites: {
+      shape: stored_data
+      style.multiple: true
+    }
+
+    transmitter
+
+    satellites -> transmitter: send
+    satellites -> transmitter: send
+    satellites -> transmitter: send
+  }
+
+  online portal: {
+    ui: {shape: hexagon}
+  }
+
+  data processor: {
+    storage: {
+      shape: cylinder
+      style.multiple: true
+    }
+  }
+
+  cell tower.transmitter -> data processor.storage: phone logs
+}
+
+user: {
+  shape: person
+  width: 130
+}
+
+user -> network.cell tower: make call
+user -> network.online portal.ui: access {
+  style.stroke-dash: 3
+}
+
+api server -> network.online portal.ui: display
+api server -> logs: persist
+logs: {shape: page; style.multiple: true}
+
+network.data processor -> api server]]></ac:plain-text-body></ac:structured-macro>

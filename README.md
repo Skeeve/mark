@@ -7,7 +7,7 @@
 Mark — a tool for syncing your markdown documentation with Atlassian Confluence
 pages.
 
-Read the blog post discussing the tool — https://samizdat.dev/use-markdown-for-confluence/
+Read the blog post discussing the tool — <https://samizdat.dev/use-markdown-for-confluence/>
 
 This is very useful if you store documentation to your software in a Git
 repository and don't want to do an extra job of updating Confluence page using
@@ -23,6 +23,7 @@ contains several HTML-ish metadata headers, which can be used to locate page ins
 Confluence instance and update it accordingly.
 
 File in the extended format should follow the specification:
+
 ```markdown
 <!-- Space: <space key> -->
 <!-- Parent: <parent 1> -->
@@ -67,6 +68,12 @@ Also, optional following headers are supported:
 ```
 
 Setting the sidebar creates a column on the right side.  You're able to add any valid HTML content. Adding this property sets the layout to `article`.
+
+```markdown
+<!-- Emoji: 🚀 -->
+```
+
+You can set a page emoji icon by specifying the icon in the headers.
 
 Mark supports Go templates, which can be included into article by using path
 to the template relative to current working dir, e.g.:
@@ -170,7 +177,7 @@ The key's value must be a string which defines the template's content.
   </tblbox>
 ```
 
-### Customizing the page layout
+## Customizing the page layout
 
 If you set the Layout to plain, the page layout can be customized using HTML comments inside the markdown:
 
@@ -201,48 +208,58 @@ Still More Content
 
 Please be aware that mark does not validate the layout, so it's your responsibility to create a valid layout.
 
+### Placeholders
+
+You can use this to define placeholders:
+
+```markdown
+<!-- ac:placeholder -->
+Placeholder
+<!-- ac:placeholder end -->
+```
+
 ### Code Blocks
 
 If you have long code blocks, you can make them collapsible with the [Code Block Macro]:
 
-    ```bash collapse
-    ...
-    some long bash code block
-    ...
-    ```
+```bash collapse
+...
+some long bash code block
+...
+```
 
 And you can also add a title:
 
-    ```bash collapse title Some long long bash function
-    ...
-    some long bash code block
-    ...
-    ```
+```bash collapse title Some long long bash function
+...
+some long bash code block
+...
+```
 
 Or linenumbers, by giving the first number
 
-    ```bash 1 collapse title Some long long bash function
-    ...
-    some long bash code block
-    ...
-    ```
+```bash 1 collapse title Some long long bash function
+...
+some long bash code block
+...
+```
 
 And even themes
 
-    ```bash 1 collapse midnight title Some long long bash function
-    ...
-    some long bash code block
-    ...
-    ```
+```bash 1 collapse midnight title Some long long bash function
+...
+some long bash code block
+...
+```
 
 Please note that, if you want to have a code block without a language
 use `-` as the first character, if you want to have the other goodies
 
-    ``` - 1 collapse midnight title Some long long code
-    ...
-    some long code block
-    ...
-    ```
+``` - 1 collapse midnight title Some long long code
+...
+some long code block
+...
+```
 
 [Code Block Macro]: https://confluence.atlassian.com/doc/code-block-macro-139390.html
 
@@ -251,7 +268,15 @@ use `-` as the first character, if you want to have the other goodies
 Block Quotes are converted to Confluence Info/Warn/Note box when the following conditions are met
 
 1. The BlockQuote is on the root level of the document (not nested)
-1. The first line of the BlockQuote contains one of the following patterns `Info/Warn/Note`
+1. The first line of the BlockQuote contains one of the following patterns `Info/Warn/Note` or [Github MD Alerts style](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax#alerts) `[!NOTE]/[!TIP]/[!IMPORTANT]/[!WARNING]/[!CAUTION]`
+
+| Github Alerts | Confluence |
+|---------------|------------|
+| Tip (green lightbulb)   | Tip (green checkmark in circle) |
+| Note (blue I in circle) | Info (blue I in circle) |
+| Important (purple exclamation mark in speech bubble) | Info (blue I in circle) |
+| Warning (yellow exclamation mark in triangle) | Note (yellow exclamation mark in triangle) |
+| Caution (red exclamation mark in hexagon) | Warning (red exclamation mark in hexagon) |
 
 In any other case the default behaviour will be resumed and html `<blockquote>` tag will be used
 
@@ -261,205 +286,217 @@ By default, mark provides several built-in templates and macros:
 
 * template `ac:status` to include badge-like text, which accepts following
   parameters:
-  - Title: text to display in the badge
-  - Color: color to use as background/border for badge
-    - Grey
-    - Red
-    - Yellow
-    - Green
-    - Blue
-  - Subtle: specify to fill badge with background or not
-    - true
-    - false
+  * Title: text to display in the badge
+  * Color: color to use as background/border for badge
+    * Grey
+    * Red
+    * Yellow
+    * Green
+    * Blue
+  * Subtle: specify to fill badge with background or not
+    * true
+    * false
 
 * template `ac:box`to include info, tip, note, and warning text boxes. Parameters:
-  - Name: select box style
-    - info
-    - tip
-    - note
-    - warning
-  - Icon: show information/tip/exclamation mark/warning icon
-    - true
-    - false
-  - Title: title text of the box
-  - Body: text to display in the box
+  * Name: select box style
+    * info
+    * tip
+    * note
+    * warning
+  * Icon: show information/tip/exclamation mark/warning icon
+    * true
+    * false
+  * Title: title text of the box
+  * Body: text to display in the box
 
-  See: https://confluence.atlassian.com/conf59/info-tip-note-and-warning-macros-792499127.html
+  See: <https://confluence.atlassian.com/conf59/info-tip-note-and-warning-macros-792499127.html>
 
 * template `ac:jira:ticket` to include JIRA ticket link. Parameters:
-  - Ticket: Jira ticket number like BUGS-123.
+  * Ticket: Jira ticket number like BUGS-123.
 
-  See: https://confluence.atlassian.com/conf59/status-macro-792499207.html
+  See: <https://confluence.atlassian.com/conf59/status-macro-792499207.html>
 
 * template `ac:jira:filter` to include JIRA Filters/Searches. Parameters:
-  - JQL: The "JQL" query of the search
-  - Server (Optional): The Jira server to fetch the query from if its not the default of "System Jira"
+  * JQL: The "JQL" query of the search
+  * Server (Optional): The Jira server to fetch the query from if its not the default of "System Jira"
 
 * template `ac:jiraissues` to include a list of JIRA tickets. Parameters:
-  - URL (Required), The URL of the XML view of your selected issues. (link to the filter)
-  - Anonymous (Optional) If this parameter is set to 'true', your JIRA application will return only the issues which allow unrestricted viewing. That is, the issues which are visible to anonymous viewers. If this parameter is omitted or set to 'false', then the results depend on how your administrator has configured the communication between the JIRA application and Confluence. By default, Confluence will show only the issues which the user is authorised to view.
-  - BaseURL  (Optional) If you specify a 'baseurl', then the link in the header, pointing to your JIRA application, will use this base URL instead of the value of the 'url' parameter. This is useful when Confluence connects to JIRA with a different URL from the one used by other users.
-  - Columns  (Optional) A list of JIRA column names, separated by semi-colons (;). You can include many columns recognized by your JIRA application, including custom columns.
-  - Count  (Optional) If this parameter is set to 'true', the issue list will show the number of issues in JIRA. The count will be linked to your JIRA site.
-  - Cache  (Optional) The macro maintains a cache of the issues which result from the JIRA query. If the 'cache' parameter is set to 'off', the relevant part of the cache is cleared each time the macro is reloaded. (The value 'false' also works and has the same effect as 'off'.)
-  - Height  (Optional) The height in pixels of the table displaying the issues.
-  - RenderMode  (Optional) If the value is 'dynamic', the JIRA Issues macro offers an interactive display.
-  - Title  (Optional) You can customise the title text at the top of the issues table with this parameter. For instance, setting the title to 'Bugs-to-fix' will replace the default 'JIRA Issues' text. This can help provide more context to the list of issues displayed.
-  - Width  (Optional) The width of the table displaying the issues. Can be entered as a percentage (%) or in pixels (px).
+  * URL (Required), The URL of the XML view of your selected issues. (link to the filter)
+  * Anonymous (Optional) If this parameter is set to 'true', your JIRA application will return only the issues which allow unrestricted viewing. That is, the issues which are visible to anonymous viewers. If this parameter is omitted or set to 'false', then the results depend on how your administrator has configured the communication between the JIRA application and Confluence. By default, Confluence will show only the issues which the user is authorised to view.
+  * BaseURL  (Optional) If you specify a 'baseurl', then the link in the header, pointing to your JIRA application, will use this base URL instead of the value of the 'url' parameter. This is useful when Confluence connects to JIRA with a different URL from the one used by other users.
+  * Columns  (Optional) A list of JIRA column names, separated by semi-colons (;). You can include many columns recognized by your JIRA application, including custom columns.
+  * Count  (Optional) If this parameter is set to 'true', the issue list will show the number of issues in JIRA. The count will be linked to your JIRA site.
+  * Cache  (Optional) The macro maintains a cache of the issues which result from the JIRA query. If the 'cache' parameter is set to 'off', the relevant part of the cache is cleared each time the macro is reloaded. (The value 'false' also works and has the same effect as 'off'.)
+  * Height  (Optional) The height in pixels of the table displaying the issues.
+  * RenderMode  (Optional) If the value is 'dynamic', the JIRA Issues macro offers an interactive display.
+  * Title  (Optional) You can customise the title text at the top of the issues table with this parameter. For instance, setting the title to 'Bugs-to-fix' will replace the default 'JIRA Issues' text. This can help provide more context to the list of issues displayed.
+  * Width  (Optional) The width of the table displaying the issues. Can be entered as a percentage (%) or in pixels (px).
 
-  See: https://confluence.atlassian.com/doc/jira-issues-macro-139380.html
+  See: <https://confluence.atlassian.com/doc/jira-issues-macro-139380.html>
 
 * template: `ac:emoticon` to include emoticons. Parameters:
-  - Name: select emoticon
-    - smile
-    - sad
-    - cheeky
-    - laugh
-    - wink
-    - thumbs-up
-    - thumbs-down
-    - information
-    - tick
-    - cross
-    - warning
-    - plus
-    - minus
-    - question
-    - light-on
-    - light-off
-    - yellow-star
-    - red-star
-    - green-star
-    - blue-star
+  * Name: select emoticon
+    * smile
+    * sad
+    * cheeky
+    * laugh
+    * wink
+    * thumbs-up
+    * thumbs-down
+    * information
+    * tick
+    * cross
+    * warning
+    * plus
+    * minus
+    * question
+    * light-on
+    * light-off
+    * yellow-star
+    * red-star
+    * green-star
+    * blue-star
 
-  See: https://confluence.atlassian.com/doc/confluence-storage-format-790796544.html
+  See: <https://confluence.atlassian.com/doc/confluence-storage-format-790796544.html>
 
 * template: `ac:youtube` to include YouTube Widget. Parameters:
-  - URL: YouTube video endpoint
-  - Width: Width in px. Defaults to "640px"
-  - Height: Height in px. Defaults to "360px"
+  * URL: YouTube video endpoint
+  * Width: Width in px. Defaults to "640px"
+  * Height: Height in px. Defaults to "360px"
 
-  See: https://confluence.atlassian.com/doc/widget-connector-macro-171180449.html#WidgetConnectorMacro-YouTube
+  See: <https://confluence.atlassian.com/doc/widget-connector-macro-171180449.html#WidgetConnectorMacro-YouTube>
 
 * template: `ac:children` to include Children Display macro
-	- Reverse (Reverse Sort): Use with the `Sort Children By` parameter. When set, the sort order changes from ascending to descending.
-      - `true`
-      - `false` (Default)
-	- Sort (Sort Children By):
-      - `creation` — to sort by content creation date
-      - `title` — to sort alphabetically on title
-      - `modified` — to sort of last modification date.
-      - If not specified, manual sorting is used if manually ordered, otherwise alphabetical.
-	- Style (Heading Style): Choose the style used to display descendants.
-      - from `h1` to `h6`
-      - If not specified, default style is applied.
-	- Page (Parent Page):
-      - `/` — to list the top-level pages of the current space, i.e. those without parents.
-      - `pagename` — to list the children of the specified page.
-      - `spacekey:pagename` — to list the children of the specified page in the specified space.
-      - If not specified, the current page is used.
-	- Excerpt (Include Excerpts): Allows you to include a short excerpt under each page in the list.
-      - `none` - no excerpt will be displayed. (Default)
-      - `simple` - displays the first line of text contained in an Excerpt macro any of the returned pages. If there is not an Excerpt macro on the page, nothing will be shown.
-      - `rich content` - displays the contents of an Excerpt macro, or if there is not an Excerpt macro on the page, the first part of the page content, including formatted text, images and some macros.
-	- First (Number of Children): Restrict the number of child pages that are displayed at the top level.
-      - If not specified, no limit is applied.
-	- Depth (Depth of Descendants): Enter a number to specify the depth of descendants to display. For example, if the value is 2, the macro will display 2 levels of child pages. This setting has no effect if `Show Descendants` is enabled.
-      - If not specified, no limit is applied.
-	- All (Show Descendants): Choose whether to display all the parent page's descendants.
-      - `true`
-      - `false` (Default)
+  * Reverse (Reverse Sort): Use with the `Sort Children By` parameter. When set, the sort order changes from ascending to descending.
+    * `true`
+    * `false` (Default)
+  * Sort (Sort Children By):
+    * `creation` — to sort by content creation date
+    * `title` — to sort alphabetically on title
+    * `modified` — to sort of last modification date.
+    * If not specified, manual sorting is used if manually ordered, otherwise alphabetical.
+  * Style (Heading Style): Choose the style used to display descendants.
+    * from `h1` to `h6`
+    * If not specified, default style is applied.
+  * Page (Parent Page):
+    * `/` — to list the top-level pages of the current space, i.e. those without parents.
+    * `pagename` — to list the children of the specified page.
+    * `spacekey:pagename` — to list the children of the specified page in the specified space.
+    * If not specified, the current page is used.
+  * Excerpt (Include Excerpts): Allows you to include a short excerpt under each page in the list.
+    * `none` - no excerpt will be displayed. (Default)
+    * `simple` - displays the first line of text contained in an Excerpt macro any of the returned pages. If there is not an Excerpt macro on the page, nothing will be shown.
+    * `rich content` - displays the contents of an Excerpt macro, or if there is not an Excerpt macro on the page, the first part of the page content, including formatted text, images and some macros.
+  * First (Number of Children): Restrict the number of child pages that are displayed at the top level.
+    * If not specified, no limit is applied.
+  * Depth (Depth of Descendants): Enter a number to specify the depth of descendants to display. For example, if the value is 2, the macro will display 2 levels of child pages. This setting has no effect if `Show Descendants` is enabled.
+    * If not specified, no limit is applied.
+  * All (Show Descendants): Choose whether to display all the parent page's descendants.
+    * `true`
+    * `false` (Default)
 
-  See: https://confluence.atlassian.com/doc/children-display-macro-139501.html
+  See: <https://confluence.atlassian.com/doc/children-display-macro-139501.html>
 
 * template: `ac:iframe` to include iframe macro (cloud only)
-  - URL: URL to the iframe.
-  - Frameborder: Choose whether to draw a border around content in the iframe.
-      - `show` (Default)
-      - `hide`
-  - Width: Width in px. Defaults to "640px"
-  - Height: Height in px. Defaults to "360px"
-  - Scrolling: Allow or prevent scrolling in the iframe to see additional content.
-      - `yes`
-      - `no`
-      - `auto` (Default)
-  - Align: Align the iframe to the left or right of the page.
-      - `left` (Default)
-      - `right`
+  * URL: URL to the iframe.
+  * Frameborder: Choose whether to draw a border around content in the iframe.
+    * `show` (Default)
+    * `hide`
+  * Width: Width in px. Defaults to "640px"
+  * Height: Height in px. Defaults to "360px"
+  * Scrolling: Allow or prevent scrolling in the iframe to see additional content.
+    * `yes`
+    * `no`
+    * `auto` (Default)
+  * Align: Align the iframe to the left or right of the page.
+    * `left` (Default)
+    * `right`
 
-  See: https://support.atlassian.com/confluence-cloud/docs/insert-the-iframe-macro
+  See: <https://support.atlassian.com/confluence-cloud/docs/insert-the-iframe-macro>
 
 * template: `ac:blog-posts`to include blog-posts
-  - Content: How much content will be shown
-      - titles (default)
-      - excerpts
-      - entire
-  - Time: Specify how much back in time Confluence should look for blog posts (default: unlimited)
-  - Label: Restrict to blog posts with specific labels
-  - Author: Restrict to blog posts by specific authors
-  - Spaces: Restrict to blog posts in specific spaces
-  - Max: Maximum number of blog posts shown (default: 15)
-  - Sort: Sorting posts by
-      - title
-      - creation (default)
-      - modified
-  - Reverse: Reverses the Sort parameter from oldest to newest (default: false)
+  * Content: How much content will be shown
+    * titles (default)
+    * excerpts
+    * entire
+  * Time: Specify how much back in time Confluence should look for blog posts (default: unlimited)
+  * Label: Restrict to blog posts with specific labels
+  * Author: Restrict to blog posts by specific authors
+  * Spaces: Restrict to blog posts in specific spaces
+  * Max: Maximum number of blog posts shown (default: 15)
+  * Sort: Sorting posts by
+    * title
+    * creation (default)
+    * modified
+  * Reverse: Reverses the Sort parameter from oldest to newest (default: false)
 
-  See: https://confluence.atlassian.com/doc/blog-posts-macro-139470.html
+  See: <https://confluence.atlassian.com/doc/blog-posts-macro-139470.html>
 
 * template: `ac:include` to include a page
-  - Page: the page to be included
-  - Space: the space the page is in (optional, otherwise same space)
+  * Page: the page to be included
+  * Space: the space the page is in (optional, otherwise same space)
 
 * template: `ac:excerpt-include` to include the excerpt from another page
-  - Page: the page the excerpt should be included from
-  - NoPanel: Determines whether Confluence will display a panel around the excerpted content (optional, default: false)
+  * Page: the page the excerpt should be included from
+  * Name: The specific identifier for the excerpt, allowing multiple Excerpt macros on one page to be referenced individually. If not provided, the first excerpt from the page will be used (optional, cloud only)
+  * NoPanel: Determines whether Confluence will display a panel around the excerpted content (optional, default: false)
 
 * template: `ac:excerpt` to create an excerpt and include it in the page
-  - Excerpt: The text you want to include
-  - OutputType: Determines whether the content of the Excerpt macro body is displayed on a new line or inline (optional, options: "BLOCK" or "INLINE", default: BLOCK)
-  - Hidden: Hide the excerpt content (optional, default: false)
+  * Excerpt: The text you want to include
+  * Name: Allows you to identify this macro so that you can add multiple Excerpt macros to one page and use a specific one on another page using the Excerpt Include macro (optional, cloud only)
+  * OutputType: Determines whether the content of the Excerpt macro body is displayed on a new line or inline (optional, options: "BLOCK" or "INLINE", default: BLOCK)
+  * Hidden: Hide the excerpt content (optional, default: false)
 
 * template: `ac:anchor` to set an anchor inside a page
-  - Anchor: Text for the anchor
+  * Anchor: Text for the anchor
 
-+ template: `ac:expand` to display an expandable/collapsible section of text on your page
-  - Title: Defines the text next to the expand/collapse icon.
-  - Body: The Text that it is expanded to.
+* template: `ac:expand` to display an expandable/collapsible section of text on your page
+  * Title: Defines the text next to the expand/collapse icon.
+  * Body: The Text that it is expanded to.
 
 * template: `ac:profile` to display a short summary of a given Confluence user's profile.
-  - Name: The username of the Confluence user whose profile summary you wish to show.
+  * Name: The username of the Confluence user whose profile summary you wish to show.
 
 * template: `ac:contentbylabel` to display a list of pages, blog posts or attachments that have particular labels
-  - CQL: The CQL query to discover the content
+  * CQL: The CQL query to discover the content
 
 * template: `ac:detailssummary` to show summary information from one page on a another page
-  - Headings: Column headings to show
-  - CQL: The CQL query to discover the pages
-  - SortBy: Sort by a specific column heading
+  * Headings: Column headings to show
+  * FirstColumn: Name of the Title Column
+  * CQL: The CQL query to discover the pages
+  * SortBy: Sort by a specific column heading
 
 * template: `ac:details` to create page properties
-  - Body: Must contain a table with two rows, the table headings are used as property key. The table content is the value.
+  * Body: Must contain a table with two rows, the table headings are used as property key. The table content is the value.
 
 * template: `ac:panel` to display a block of text within a customisable panel
-  - Title: Panel title (optional)
-  - Body:  Body text of the panel
-  - BGColor: Background Color
-  - TitleBGColor: Background color of the title bar
-  - TitleColor: Text color of the title
-  - BorderStyle: Style of the panel's border
+  * Title: Panel title (optional)
+  * Body: Body text of the panel
+  * BGColor: Background Color
+  * TitleBGColor: Background color of the title bar
+  * TitleColor: Text color of the title
+  * BorderStyle: Style of the panel's border
 
 * template `ac:recently-updated` to display a list of most recently changed content
-  - Spaces: List of Spaces to watch (optional, default is current Space)
-  - ShowProfilePic: Show profile picture of editor
-  - Max: Maximum number of changes
-  - Types: Include these content types only (comments, blogposts, pages)
-  - Theme: Apperance of the macro (concise, social, sidebar)
-  - HideHeading: Determines whether the macro hides or displays the text 'Recently Updated' as a title above the list of content
-  - Labels: Filter the results by label. The macro will display only the pages etc which are tagged with the label(s) you specify here.
+  * Spaces: List of Spaces to watch (optional, default is current Space)
+  * ShowProfilePic: Show profile picture of editor
+  * Max: Maximum number of changes
+  * Types: Include these content types only (comments, blogposts, pages)
+  * Theme: Apperance of the macro (concise, social, sidebar)
+  * HideHeading: Determines whether the macro hides or displays the text 'Recently Updated' as a title above the list of content
+  * Labels: Filter the results by label. The macro will display only the pages etc which are tagged with the label(s) you specify here.
 
 * template: `ac:pagetreesearch` to add a search box to your Confluence page.
-  - Root: Name of the root page whose hierarchy of pages will be searched by this macro. If this not specified, the root page is the current page.
+  * Root: Name of the root page whose hierarchy of pages will be searched by this macro. If this not specified, the root page is the current page.
+
+* template: `ac:column` To be used with the section macro to define the columns in a page.
+  * Width: Width of the column
+  * Body: The content of the column
+
+* template: `ac:multimedia` to embedd an attached video, animation or other multimedia files in a Confluence page
+  * Name: Name of the file
+  * Width: Width of the video (optional)
+  * AutoPlay: Start playing the file on page load (default: false)
 
 * macro `@{...}` to mention user by name specified in the braces.
 
@@ -467,13 +504,14 @@ By default, mark provides several built-in templates and macros:
 
 ### Insert Disclaimer
 
-**disclaimer.md**
+This should be in **disclaimer.md**.
 
 ```markdown
 **NOTE**: this document is generated, do not edit manually.
 ```
 
-**article.md**
+Add this to your **article.md**.
+
 ```markdown
 <!-- Space: TEST -->
 <!-- Title: My Article -->
@@ -484,8 +522,6 @@ This is my article.
 ```
 
 ### Insert Status Badge
-
-**article.md**
 
 ```markdown
 <!-- Space: TEST -->
@@ -506,8 +542,6 @@ This is my article.
 ```
 
 ### Insert Colored Text Box
-
-**article.md**
 
 ```markdown
 <!-- Space: TEST -->
@@ -582,6 +616,7 @@ Parameters:
 [Confluence Pagetree Macro]:https://confluence.atlassian.com/conf59/page-tree-macro-792499177.html
 
 E.G.
+
 ```markdown
 <!-- Macro: :pagetree:
      Template: ac:pagetree
@@ -626,9 +661,8 @@ You can use various [parameters](https://confluence.atlassian.com/conf59/childre
 
 :children:
 ```
-### Insert Jira Ticket
 
-**article.md**
+### Insert Jira Ticket
 
 ```markdown
 <!-- Space: TEST -->
@@ -656,6 +690,7 @@ Link to a [page title containing spaces](<ac:With Multiple Words>)
 ```markdown
 ![Example](../images/examples.png)
 ```
+
 will automatically upload the inlined image as an attachment and inline the image using the `ac:image` template.
 
 If the file is not found, it will inline the image using the `ac:image` template and link to the image.
@@ -663,16 +698,20 @@ If the file is not found, it will inline the image using the `ac:image` template
 ### Add width for an image
 
 Use the following macro:
+
 ```markdown
 <!-- Macro: \!\[.*\]\((.+)\)\<\!\-\- width=(.*) \-\-\>
      Template: ac:image
      Attachment: ${1}
      Width: ${2} -->
 ```
+
 And attach any image with the following
+
 ```markdown
 ![Example](../images/example.png)<!-- width=300 -->
 ```
+
 The width will be the commented html after the image (in this case 300px).
 
 Currently this is not compatible with the automated upload of inline images.
@@ -680,17 +719,37 @@ Currently this is not compatible with the automated upload of inline images.
 ### Render Mermaid Diagram
 
 Confluence doesn't provide [mermaid.js](https://github.com/mermaid-js/mermaid) support natively. Mark provides a convenient way to enable the feature like [Github does](https://github.blog/2022-02-14-include-diagrams-markdown-files-mermaid/).
-As long as you have a code block and are marked as "mermaid", the mark will automatically render it as a PNG image and insert into before the code block.
+As long as you have a code block marked as "mermaid", mark will automatically render it as a PNG image and attach it to the page as a rendered version of the code block.
 
-    ```mermaid title diagrams_example
-    graph TD;
-    A-->B;
-    ```
+```mermaid title diagrams_example
+graph TD;
+A-->B;
+```
 
 In order to properly render mermaid, you can choose between the following mermaid providers:
 
 * "mermaid-go" via [mermaid.go](https://github.com/dreampuf/mermaid.go)
-* "cloudscript" via [cloudscript-io-mermaid-addon](https://marketplace.atlassian.com/apps/1219878/cloudscript-io-mermaid-addon)
+* "cloudscript" via [cloudscript-io-mermaid-addon](https://marketplace.atlassian.com/apps/1219878/cloudscript-io-mermaid-addon) (deprecated)
+
+### Render D2 Diagram
+
+Optionally you can enable [D2](https://github.com/terrastruct/d2) rendering via `--features="d2"`.
+This will transform the d2 diagram into a png that will be attached to Confluence, similar to how mermaid-go support works.
+All you need is a codeblock marked as "d2".
+
+```d2
+X -> Y
+```
+
+### MkDocs' Admonitions
+
+Optionally you can enable mkdocs-style [Admonitions](https://squidfunk.github.io/mkdocs-material/reference/admonitions/) via `--features="mkdocsadmonitions"`.
+
+When enabled, this renders note, warning, tip, info admonitions as Confluence alerts.
+
+```markdown
+!!! note
+```
 
 ## Installation
 
@@ -720,7 +779,7 @@ go get -v github.com/kovetskiy/mark
 ### Docker
 
 ```bash
-$ docker run --rm -i kovetskiy/mark:latest mark <params>
+docker run --rm -i kovetskiy/mark:latest mark <params>
 ```
 
 ### Compile and install using docker-compose
@@ -736,42 +795,50 @@ $ cp mark /usr/local/bin
 
 ## Usage
 
-```
+```bash
+NAME:
+   mark - A tool for updating Atlassian Confluence pages from markdown.
+
 USAGE:
-   mark [global options] [arguments...]
+   mark [global options]
 
 VERSION:
-   9.10.1
+   14.0.2
 
 DESCRIPTION:
    Mark is a tool to update Atlassian Confluence pages from markdown. Documentation is available here: https://github.com/kovetskiy/mark
 
 GLOBAL OPTIONS:
-   --files value, -f value                       use specified markdown file(s) for converting to html. Supports file globbing patterns (needs to be quoted). [$MARK_FILES]
-   --compile-only                                show resulting HTML and don't update Confluence page content. (default: false) [$MARK_COMPILE_ONLY]
-   --dry-run                                     resolve page and ancestry, show resulting HTML and exit. (default: false) [$MARK_DRY_RUN]
-   --edit-lock, -k                               lock page editing to current user only to prevent accidental manual edits over Confluence Web UI. (default: false) [$MARK_EDIT_LOCK]
-   --drop-h1, --h1_drop                          don't include the first H1 heading in Confluence output. (default: false) [$MARK_H1_DROP]
-   --strip-linebreak                             remove linebreaks inside of tags, to accomodate Confluence non-standard behavior (default: false)
-   --title-from-h1, --h1_title                   extract page title from a leading H1 heading. If no H1 heading on a page exists, then title must be set in the page metadata. (default: false) [$MARK_H1_TITLE]
-   --minor-edit                                  don't send notifications while updating Confluence page. (default: false) [$MARK_MINOR_EDIT]
-   --color value                                 display logs in color. Possible values: auto, never. (default: "auto") [$MARK_COLOR]
-   --debug                                       enable debug logs. (default: false) [$MARK_DEBUG]
-   --trace                                       enable trace logs. (default: false) [$MARK_TRACE]
-   --username value, -u value                    use specified username for updating Confluence page. [$MARK_USERNAME]
-   --password value, -p value                    use specified token for updating Confluence page. Specify - as password to read password from stdin, or your Personal access token. Username is not mandatory if personal access token is provided. For more info please see: https://developer.atlassian.com/server/confluence/confluence-server-rest-api/#authentication. [$MARK_PASSWORD]
-   --target-url value, -l value                  edit specified Confluence page. If -l is not specified, file should contain metadata (see above). [$MARK_TARGET_URL]
-   --base-url value, -b value, --base_url value  base URL for Confluence. Alternative option for base_url config field. [$MARK_BASE_URL]
-   --config value, -c value                      use the specified configuration file. (default: System specific) [$MARK_CONFIG]
-   --ci                                          run on CI mode. It won't fail if files are not found. (default: false) [$MARK_CI]
-   --space value                                 use specified space key. If the space key is not specified, it must be set in the page metadata. [$MARK_SPACE]
-   --parents value                               A list containing the parents of the document separated by parents-delimiter (default: '/'). These will be preprended to the ones defined in the document itself. [$MARK_PARENTS]
-   --parents-delimiter value                     The delimiter used for the nested parent (default: "/") [$MARK_PARENTS_DELIMITER]
-   --mermaid-provider value                      defines the mermaid provider to use. Supported options are: cloudscript, mermaid-go. (default: "cloudscript") [$MARK_MERMAID_PROVIDER]
-   --mermaid-scale value                         defines the scaling factor for mermaid renderings. (default: 1) [$MARK_MERMAID_SCALE]
-   --include-path value                          Path for shared includes, used as a fallback if the include doesn't exist in the current directory. [$MARK_INCLUDE_PATH]
-   --help, -h                                    show help
-   --version, -v                                 print the version
+   --files string, -f string                use specified markdown file(s) for converting to html. Supports file globbing patterns (needs to be quoted). [$MARK_FILES]
+   --continue-on-error                      don't exit if an error occurs while processing a file, continue processing remaining files. (default: false) [$MARK_CONTINUE_ON_ERROR]
+   --compile-only                           show resulting HTML and don't update Confluence page content. (default: false) [$MARK_COMPILE_ONLY]
+   --dry-run                                resolve page and ancestry, show resulting HTML and exit. (default: false) [$MARK_DRY_RUN]
+   --edit-lock, -k                          lock page editing to current user only to prevent accidental manual edits over Confluence Web UI. (default: false) [$MARK_EDIT_LOCK]
+   --drop-h1                                don't include the first H1 heading in Confluence output. (default: false) [$MARK_DROP_H1]
+   --strip-linebreaks, -L                   remove linebreaks inside of tags, to accommodate non-standard Confluence behavior (default: false) [$MARK_STRIP_LINEBREAKS]
+   --title-from-h1                          extract page title from a leading H1 heading. If no H1 heading on a page exists, then title must be set in the page metadata. (default: false) [$MARK_TITLE_FROM_H1]
+   --title-append-generated-hash            appends a short hash generated from the path of the page (space, parents, and title) to the title (default: false) [$MARK_TITLE_APPEND_GENERATED_HASH]
+   --minor-edit                             don't send notifications while updating Confluence page. (default: false) [$MARK_MINOR_EDIT]
+   --version-message string                 add a message to the page version, to explain the edit (default: "") [$MARK_VERSION_MESSAGE]
+   --color string                           display logs in color. Possible values: auto, never. (default: "auto") [$MARK_COLOR]
+   --log-level string                       set the log level. Possible values: TRACE, DEBUG, INFO, WARNING, ERROR, FATAL. (default: "info") [$MARK_LOG_LEVEL]
+   --username string, -u string             use specified username for updating Confluence page. [$MARK_USERNAME]
+   --password string, -p string             use specified token for updating Confluence page. Specify - as password to read password from stdin, or your Personal access token. Username is not mandatory if personal access token is provided. For more info please see: https://developer.atlassian.com/server/confluence/confluence-server-rest-api/#authentication. [$MARK_PASSWORD]
+   --target-url string, -l string           edit specified Confluence page. If -l is not specified, file should contain metadata (see above). [$MARK_TARGET_URL]
+   --base-url string, -b string             base URL for Confluence. Alternative option for base_url config field. [$MARK_BASE_URL]
+   --config string, -c string               use the specified configuration file. (default: $HOME/.config/mark.toml") [$MARK_CONFIG]
+   --ci                                     run on CI mode. It won't fail if files are not found. (default: false) [$MARK_CI]
+   --space string                           use specified space key. If the space key is not specified, it must be set in the page metadata. [$MARK_SPACE]
+   --parents string                         A list containing the parents of the document separated by parents-delimiter (default: '/'). These will be prepended to the ones defined in the document itself. [$MARK_PARENTS]
+   --parents-delimiter string               The delimiter used for the parents list (default: "/") [$MARK_PARENTS_DELIMITER]
+   --mermaid-provider string                defines the mermaid provider to use. Supported options are: cloudscript, mermaid-go. (default: "cloudscript") [$MARK_MERMAID_PROVIDER]
+   --mermaid-scale float                    defines the scaling factor for mermaid renderings. (default: 1) [$MARK_MERMAID_SCALE]
+   --include-path string                    Path for shared includes, used as a fallback if the include doesn't exist in the current directory. [$MARK_INCLUDE_PATH]
+   --changes-only                           Avoids re-uploading pages that haven't changed since the last run. (default: false) [$MARK_CHANGES_ONLY]
+   --d2-scale float                         defines the scaling factor for d2 renderings. (default: 1) [$MARK_D2_SCALE]
+   --features string [ --features string ]  Enables optional features. Current features: d2, mermaid (default: "mermaid") [$MARK_FEATURES]
+   --help, -h                               show help
+   --version, -v                            print the version
 ```
 
 You can store user credentials in the configuration file, which should be
@@ -789,13 +856,13 @@ drop-h1 = true
 **NOTE**: Labels aren't supported when using `minor-edit`!
 
 **NOTE**: The system specific locations are described in here:
-https://pkg.go.dev/os#UserConfigDir.
-Currently these are:
+<https://pkg.go.dev/os#UserConfigDir>.
+Currently, these are:
 On Unix systems, it returns $XDG_CONFIG_HOME as specified by https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html if non-empty, else $HOME/.config. On Darwin, it returns $HOME/Library/Application Support. On Windows, it returns %AppData%. On Plan 9, it returns $home/lib.
 
-# Tricks
+## Tricks
 
-## Continuous Integration
+### Continuous Integration
 
 It's quite trivial to integrate Mark into a CI/CD system, here is an example with [Snake CI](https://snake-ci.com/)
 in case of self-hosted Bitbucket Server / Data Center.
@@ -831,7 +898,7 @@ done
 
 The following directive tells the CI to run this particular job only if the changes are pushed into the
 `main` branch. It means you can safely push your changes into feature branches without being afraid
-that they automatically shown in Confluence, then go through the reviewal process and automatically
+that they have automatically shown in Confluence, then go through the reviewal process and automatically
 deploy them when PR got merged.
 
 ```yaml
@@ -840,27 +907,38 @@ only:
     - main
 ```
 
-## File Globbing
+### File Globbing
 
 Rather than running `mark` multiple times, or looping through a list of files from `find`, you can use file globbing (i.e. wildcard patterns) to match files in subdirectories. For example:
+
 ```bash
 mark -f "helpful_cmds/*.md"
 ```
 
+You can also use `**` to get all files recursively.
+
+```bash
+mark -f "**/docs/*.md"
+```
+
+### Linting markdown
+
+We recommend to lint your markdown files with [markdownlint-cli2](https://github.com/DavidAnson/markdownlint-cli2) before publishing them to confluence to catch any conversion errors early.
+
 ## Issues, Bugs & Contributions
 
 I've started the project to solve my own problem and open sourced the solution so anyone who has a problem like me can solve it too.
-I have no profits/sponsors from this projects which means I don't really prioritize working on this project in my free time.
+I have no profits/sponsors from these projects which means I don't really prioritize working on this project in my free time.
 I still check the issues and do code reviews for Pull Requests which means if you encounter a bug in
 the program, you should not expect me to fix it as soon as possible, but I'll be very glad to
 merge your own contributions into the project and release the new version.
 
-I try to label all new issues so it's easy to find a bug or a feature request to fix/implement, if
+I try to label all new issues, so it's easy to find a bug or a feature request to fix/implement, if
 you are willing to help with the project, you can use the following labels to find issues, just make
 sure to reply in the issue to let everyone know you took the issue:
 
-- [label:feature-request](https://github.com/kovetskiy/mark/issues?q=is%3Aissue+is%3Aopen+label%3Afeature-request)
-- [label:bug](https://github.com/kovetskiy/mark/issues?q=is%3Aissue+is%3Aopen+label%3Abug)
+* [label:feature-request](https://github.com/kovetskiy/mark/issues?q=is%3Aissue+is%3Aopen+label%3Afeature-request)
+* [label:bug](https://github.com/kovetskiy/mark/issues?q=is%3Aissue+is%3Aopen+label%3Abug)
 
 ## Contributors ✨
 
@@ -928,6 +1006,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/recrtl"><img src="https://avatars.githubusercontent.com/u/14078835?v=4?s=100" width="100px;" alt="recrtl"/><br /><sub><b>recrtl</b></sub></a><br /><a href="https://github.com/kovetskiy/mark/commits?author=recrtl" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/seletskiy"><img src="https://avatars.githubusercontent.com/u/674812?v=4?s=100" width="100px;" alt="Stanislav Seletskiy"/><br /><sub><b>Stanislav Seletskiy</b></sub></a><br /><a href="https://github.com/kovetskiy/mark/commits?author=seletskiy" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/nr18"><img src="https://avatars.githubusercontent.com/u/1660601?v=4?s=100" width="100px;" alt="Joris Conijn"/><br /><sub><b>Joris Conijn</b></sub></a><br /><a href="https://github.com/kovetskiy/mark/commits?author=nr18" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
